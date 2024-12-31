@@ -2,7 +2,7 @@ import { useUser } from "@clerk/clerk-react";
 import RecordsForm from "../../components/RecordsForm";
 import RecordsTable from "../../components/RecordsTable";
 import { Oval, ThreeDots } from "react-loader-spinner";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 import Card from "../../components/Card";
 
@@ -141,16 +141,18 @@ const Dashboard = () => {
   };
 
   // chartData
-  const chartData = allRecords.map((record) => {
-    const amount = record.amount || 0;
-    const date = new Date(record.date).toLocaleDateString();
-    return {
-      name: date,
-      savings: amount,
-      income: amount > 0 ? amount : 0,
-      expense: amount < 0 ? Math.abs(amount) : 0,
-    };
-  });
+  const chartData = useMemo(() => {
+    return allRecords.map((record) => {
+      const amount = record.amount || 0;
+      const date = new Date(record.date).toLocaleDateString();
+      return {
+        name: date,
+        savings: amount,
+        income: amount > 0 ? amount : 0,
+        expense: amount < 0 ? Math.abs(amount) : 0,
+      };
+    });
+  }, [allRecords]);
 
   const getAmountForCategory = (categoryType) => {
     switch (categoryType) {
@@ -185,7 +187,7 @@ const Dashboard = () => {
         <>
           <header className="mb-4">
             <h1 className=" text-4xl md:text-6xl font-bold inline-flex items-center font-ragnear">
-              Welcome{" "}
+              Hello,{" "}
               {isLoading ? (
                 <ThreeDots
                   visible={true}
@@ -201,7 +203,7 @@ const Dashboard = () => {
                   {user?.firstName}
                 </span>
               )}
-              !
+              👋
             </h1>
           </header>
           <div className="flex flex-col lg:flex-row gap-6">
@@ -214,7 +216,7 @@ const Dashboard = () => {
               />
             </section>
             <section className="flex-1">
-              <h2 className="text-2xl mb-4 font-semibold">Overview</h2>
+              <h2 className="text-3xl mb-4 font-semibold">Overview</h2>
               <div className="flex gap-5 items-center flex-wrap">
                 {cardData.map((card) => {
                   return (
@@ -230,7 +232,7 @@ const Dashboard = () => {
                 })}
               </div>
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-4">Graph</h2>
+                <h2 className="text-3xl font-semibold mb-4">Graph</h2>
                 <AmountsChart data={chartData} />
               </div>
               <div className="flex-grow-2 overflow-y-auto max-h-screen mt-6">
@@ -248,7 +250,7 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <>
-                    <h2 className="text-2xl font-semibold mb-4">
+                    <h2 className="text-3xl font-semibold mb-4">
                       {" "}
                       Finances Table
                     </h2>
