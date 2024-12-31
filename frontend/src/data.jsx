@@ -106,7 +106,7 @@ export const cardData = [
     icon: <IoTrendingUp />,
     title: "Income",
     categoryType: "income",
-    bgColor: "bg-green-600/60",
+    bgColor: "bg-green-600/30",
     iconColor: "text-green-300",
   },
   {
@@ -114,7 +114,7 @@ export const cardData = [
     icon: <IoTrendingDown />,
     title: "Expenses",
     categoryType: "expenses",
-    bgColor: "bg-red-500/50",
+    bgColor: "bg-red-500/30",
     iconColor: "text-red-300",
   },
   {
@@ -122,7 +122,7 @@ export const cardData = [
     icon: <TbMoneybag />,
     categoryType: "savings",
     title: "Savings",
-    bgColor: "bg-blue-600/60",
+    bgColor: "bg-blue-600/30",
     iconColor: "text-blue-300",
   },
 ];
