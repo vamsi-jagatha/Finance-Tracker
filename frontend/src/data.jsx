@@ -2,6 +2,9 @@
 import { IoTrendingUp } from "react-icons/io5";
 import { IoTrendingDown } from "react-icons/io5";
 import { TbMoneybag } from "react-icons/tb";
+import { ChartNoAxesCombined, HandCoins } from "lucide-react"; // Importing Lucide React icon
+import { Bell, HelpCircle } from "lucide-react"; // Importing additional Lucide React icons
+
 export const financeCategories = [
   {
     categoryType: "Income",
@@ -100,9 +103,45 @@ export const navLinks = {
   ],
 };
 
+export const sidebarLinks = [
+  {
+    id: 1,
+    name: "Transactions",
+    link: "#transactions",
+    icon: <ChartNoAxesCombined />,
+  },
+  {
+    id: 2,
+    name: "Budget",
+    link: "#budget",
+    icon: <HandCoins />,
+  },
+  {
+    id: 3,
+    name: "Notifications",
+    link: "#notifications",
+    icon: <Bell />, // Using Lucide React icon
+  },
+  {
+    id: 4,
+    name: "Help",
+    link: "#help",
+    icon: <HelpCircle />, // Using Lucide React icon
+  },
+  // Add more links as needed
+];
+
 export const cardData = [
   {
     id: 1,
+    icon: <TbMoneybag />,
+    categoryType: "Balance",
+    title: "Balance",
+    bgColor: "bg-blue-600/30",
+    iconColor: "text-blue-300",
+  },
+  {
+    id: 2,
     icon: <IoTrendingUp />,
     title: "Income",
     categoryType: "income",
@@ -110,19 +149,11 @@ export const cardData = [
     iconColor: "text-green-300",
   },
   {
-    id: 2,
+    id: 3,
     icon: <IoTrendingDown />,
     title: "Expenses",
     categoryType: "expenses",
     bgColor: "bg-red-500/30",
     iconColor: "text-red-300",
-  },
-  {
-    id: 3,
-    icon: <TbMoneybag />,
-    categoryType: "savings",
-    title: "Savings",
-    bgColor: "bg-blue-600/30",
-    iconColor: "text-blue-300",
   },
 ];
