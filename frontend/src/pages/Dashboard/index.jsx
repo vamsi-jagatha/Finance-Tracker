@@ -8,6 +8,8 @@ import Card from "../../components/Card";
 
 import AmountsChart from "../../components/Chart";
 import { cardData } from "../../data";
+// import Budget from "../../components/Budget";
+import Sidebar from "../../components/Sidebar";
 
 // fetchAllRecords function
 const fetchAllRecords = async (
@@ -63,6 +65,7 @@ const Dashboard = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [incomeAmount, setIncomeAmount] = useState(0);
+  const [showRecordsForm, setShowRecordsForm] = useState(false);
   const { user } = useUser();
   const { theme } = useContext(ThemeContext);
 
@@ -185,39 +188,57 @@ const Dashboard = () => {
         </div>
       ) : (
         <>
-          <header className="mb-4">
-            <h1 className=" text-4xl md:text-6xl font-bold inline-flex items-center font-ragnear">
-              Hello,{" "}
-              {isLoading ? (
-                <ThreeDots
-                  visible={true}
-                  strokeWidth="4"
-                  secondaryColor="gray"
-                  height="35"
-                  width="35"
-                  color="blue"
-                  ariaLabel="oval-loading"
-                />
-              ) : (
-                <span className="text-blue-500 font-ragnear ml-4 md:ml-5 mr-2 md:mr-3">
-                  {user?.firstName}
-                </span>
-              )}
-              👋
-            </h1>
-          </header>
+          <header className="mb-4"></header>
           <div className="flex flex-col lg:flex-row gap-6">
-            <section className="flex-1">
-              <RecordsForm
-                addRecordCallback={addRecordToTable}
-                updateRecordCallback={updateRecordInTable}
-                recordToUpdate={recordToUpdate}
-                setRecordToUpdate={setRecordToUpdate}
-              />
-            </section>
-            <section className="flex-1">
+            <Sidebar />
+            {showRecordsForm && (
+              <section className="fixed left-0 top-0  w-screen h-screen bg-gray-100 bg-opacity-50 z-50 flex items-center justify-center">
+                <RecordsForm
+                  addRecordCallback={addRecordToTable}
+                  updateRecordCallback={updateRecordInTable}
+                  recordToUpdate={recordToUpdate}
+                  setRecordToUpdate={setRecordToUpdate}
+                  setRecordsFormVisible={setShowRecordsForm}
+                />
+              </section>
+            )}
+
+            <section className="flex-1  md:ml-32 lg:ml-64">
+              <div className="flex justify-between flex-col md:flex-row gap-6 md:items-center  mb-6 md:mb-10 ">
+                <h1 className=" text-4xl md:text-6xl font-bold inline-flex items-center font-ragnear order-3 md:order-1">
+                  Hello,{" "}
+                  {isLoading ? (
+                    <ThreeDots
+                      visible={true}
+                      strokeWidth="4"
+                      secondaryColor="gray"
+                      height="35"
+                      width="35"
+                      color="blue"
+                      ariaLabel="oval-loading"
+                    />
+                  ) : (
+                    <span className="text-blue-500 font-ragnear ml-4 md:ml-5 mr-2 md:mr-3">
+                      {user?.firstName}
+                    </span>
+                  )}
+                  👋
+                </h1>
+                <div className="  flex items-center gap-6  self-end order-2 md:order-2">
+                  <button
+                    className="border-blue-600 border-2 text-blue-500  p-2 rounded-lg"
+                    onClick={() => setShowRecordsForm(!showRecordsForm)}
+                  >
+                    Add Record
+                  </button>
+                  <button className="bg-blue-600 p-2 rounded-lg text-white">
+                    Add Budget
+                  </button>
+                </div>
+              </div>
               <h2 className="text-3xl mb-4 font-semibold">Overview</h2>
               <div className="flex gap-5 items-center flex-wrap">
+                {/* <Budget expenseAmount={expenseAmount} /> */}
                 {cardData.map((card) => {
                   return (
                     <Card
@@ -232,7 +253,7 @@ const Dashboard = () => {
                 })}
               </div>
               <div className="mb-6">
-                <h2 className="text-3xl font-semibold mb-4">Graph</h2>
+                <h2 className="text-3xl font-semibold mb-4">Analytics</h2>
                 <AmountsChart data={chartData} />
               </div>
               <div className="flex-grow-2 overflow-y-auto max-h-screen mt-6">
@@ -252,13 +273,14 @@ const Dashboard = () => {
                   <>
                     <h2 className="text-3xl font-semibold mb-4">
                       {" "}
-                      Finances Table
+                      Transactions
                     </h2>
                     <RecordsTable
                       allRecords={allRecords}
                       setAllRecords={setAllRecords}
                       setRecordToUpdate={setRecordToUpdate}
                       deleteRecordCallback={deleteRecordFromTable}
+                      setRecordsFormVisible={setShowRecordsForm}
                     />
                   </>
                 )}
