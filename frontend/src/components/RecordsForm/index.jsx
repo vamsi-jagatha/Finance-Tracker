@@ -7,6 +7,7 @@ const RecordsForm = ({
   updateRecordCallback,
   recordToUpdate,
   setRecordToUpdate,
+  setRecordsFormVisible,
 }) => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -80,6 +81,7 @@ const RecordsForm = ({
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
       clearForm();
+      setTimeout(() => setRecordsFormVisible(false), 3000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -115,7 +117,13 @@ const RecordsForm = ({
   };
 
   return (
-    <div className="sticky top-40 left-0 flex-1 bg-gray-100 max-w-sm p-6 rounded-3xl text-black shadow-2xl">
+    <div className=" flex-1 bg-gray-100 max-w-sm p-6 rounded-3xl text-black shadow-2xl">
+      <button
+        onClick={() => setRecordsFormVisible((prevState) => !prevState)}
+        className="text-blue-500 self-end"
+      >
+        close
+      </button>
       <form onSubmit={handleRecordForm} className="space-y-6">
         <h1 className="text-4xl font-semibold text-center text-blue-500">
           Manage Record
