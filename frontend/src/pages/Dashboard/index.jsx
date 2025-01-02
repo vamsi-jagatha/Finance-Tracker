@@ -192,7 +192,11 @@ const Dashboard = () => {
           <div className="flex flex-col lg:flex-row gap-6">
             <Sidebar />
             {showRecordsForm && (
-              <section className="fixed left-0 top-0  w-screen h-screen bg-gray-100 bg-opacity-50 z-50 flex items-center justify-center">
+              <section
+                className={`fixed left-0 top-0  w-screen h-screen ${
+                  theme === "dark" ? "bg-gray-400/40" : "bg-red-100/40"
+                }  z-50 flex items-center justify-center`}
+              >
                 <RecordsForm
                   addRecordCallback={addRecordToTable}
                   updateRecordCallback={updateRecordInTable}
@@ -205,7 +209,7 @@ const Dashboard = () => {
 
             <section className="flex-1  md:ml-32 lg:ml-64">
               <div className="flex justify-between flex-col md:flex-row gap-6 md:items-center  mb-6 md:mb-10 ">
-                <h1 className=" text-4xl md:text-6xl font-bold inline-flex items-center font-ragnear order-3 md:order-1">
+                <h1 className=" text-4xl md:text-6xl font-bold inline-flex items-center font-ragnear ">
                   Hello,{" "}
                   {isLoading ? (
                     <ThreeDots
@@ -224,9 +228,9 @@ const Dashboard = () => {
                   )}
                   👋
                 </h1>
-                <div className="  flex items-center gap-6  self-end order-2 md:order-2">
+                <div className="  flex items gap-6  ">
                   <button
-                    className="border-blue-600 border-2 text-blue-500  p-2 rounded-lg"
+                    className="border-blue-600 border-2 text-blue-500  p-2 rounded-lg "
                     onClick={() => setShowRecordsForm(!showRecordsForm)}
                   >
                     Add Record
@@ -237,7 +241,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <h2 className="text-3xl mb-4 font-semibold">Overview</h2>
-              <div className="flex gap-5 items-center flex-wrap">
+              <div className="flex gap-5 items-center  flex-wrap  md:flex-nowrap">
                 {/* <Budget expenseAmount={expenseAmount} /> */}
                 {cardData.map((card) => {
                   return (
