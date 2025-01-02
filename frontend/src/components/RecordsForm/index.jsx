@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { financeCategories, paymentMethods } from "../../data";
+import { X } from "lucide-react";
 
 const RecordsForm = ({
   addRecordCallback,
@@ -117,19 +118,28 @@ const RecordsForm = ({
   };
 
   return (
-    <div className=" flex-1 bg-gray-100 max-w-sm p-6 rounded-3xl text-black shadow-2xl">
-      <button
-        onClick={() => setRecordsFormVisible((prevState) => !prevState)}
-        className="text-blue-500 self-end"
-      >
-        close
-      </button>
-      <form onSubmit={handleRecordForm} className="space-y-6">
-        <h1 className="text-4xl font-semibold text-center text-blue-500">
-          Manage Record
+    <div className="relative flex-1 bg-gray-200 max-w-sm md:max-w-md  p-6 rounded-xl text-black shadow-2xl">
+      <div className="flex justify-end items-center absolute top-5 right-5">
+        <button
+          onClick={() => {
+            clearForm();
+            setError(null);
+            setSuccess(false);
+            setRecordToUpdate(null);
+            setRecordsFormVisible((prevState) => !prevState);
+          }}
+          className="text-blue-600 p-2 rounded-full hover:bg-gray-300"
+          title="close"
+        >
+          <X />
+        </button>
+      </div>
+      <form onSubmit={handleRecordForm} className="">
+        <h1 className="text-xl font-bold text-left text-blue-500 uppercase">
+          {recordToUpdate ? "Update Record" : "Add Record"}
         </h1>
-        <div className="flex flex-col">
-          <label htmlFor="title" className="text-gray-700">
+        <div className="flex flex-col mt-2">
+          <label htmlFor="title" className="text-gray-700 mb-1">
             Title
           </label>
           <input
@@ -141,8 +151,8 @@ const RecordsForm = ({
             className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="amount" className="text-gray-700">
+        <div className="flex flex-col mt-2">
+          <label htmlFor="amount" className="text-gray-700 mb-1">
             Amount
           </label>
           <input
@@ -154,8 +164,8 @@ const RecordsForm = ({
             className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="category" className="text-gray-700">
+        <div className="flex flex-col mt-2">
+          <label htmlFor="category" className="text-gray-700 mb-1">
             Category
           </label>
           <select
@@ -163,7 +173,7 @@ const RecordsForm = ({
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
           >
             <option value="" disabled>
               Select a category
@@ -179,8 +189,8 @@ const RecordsForm = ({
             ))}
           </select>
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="paymentMethod" className="text-gray-700">
+        <div className="flex flex-col mt-2">
+          <label htmlFor="paymentMethod" className="text-gray-700 mb-1">
             Payment Method
           </label>
           <select
@@ -188,7 +198,7 @@ const RecordsForm = ({
             required
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border-2 border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
           >
             <option value="" disabled>
               Select payment method
@@ -203,7 +213,7 @@ const RecordsForm = ({
         <button
           type="submit"
           disabled={loading}
-          className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 disabled:bg-gray-400"
+          className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 disabled:bg-gray-400 mt-10"
         >
           {loading
             ? "Processing..."
