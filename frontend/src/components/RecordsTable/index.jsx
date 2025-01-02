@@ -1,8 +1,11 @@
+import { Oval } from "react-loader-spinner";
+
 const RecordsTable = ({
   allRecords,
   setRecordToUpdate,
   deleteRecordCallback,
   isLoading,
+  setRecordsFormVisible,
 }) => {
   return (
     <div className="relative flex-1 max-w-8xl max-h-72 md:max-h-80 mx-auto  bg-gray-100 rounded-3xl shadow-2xl text-black overflow-x-auto">
@@ -38,7 +41,15 @@ const RecordsTable = ({
                 colSpan="7"
                 className="text-center text-gray-500 text-sm md:text-base h-40"
               >
-                Loading...
+                <Oval
+                  visible={true}
+                  strokeWidth="4"
+                  secondaryColor="gray"
+                  height="35"
+                  width="35"
+                  color="blue"
+                  ariaLabel="oval-loading"
+                />
               </td>
             </tr>
           ) : allRecords.length === 0 ? (
@@ -81,12 +92,18 @@ const RecordsTable = ({
                     ? new Date(record.date).toLocaleDateString()
                     : "N/A"}
                 </td>
-                <td className="min-w-[150px] h-12 text-center">
+                <td
+                  className="min-w-[150px] h-12 text-center"
+                  title={record.paymentMethod}
+                >
                   {record.paymentMethod || "N/A"}
                 </td>
                 <td className="min-w-[200px] h-12 flex items-center justify-center gap-2">
                   <button
-                    onClick={() => setRecordToUpdate(record)}
+                    onClick={() => {
+                      setRecordsFormVisible((prevState) => !prevState);
+                      setRecordToUpdate(record);
+                    }}
                     className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-400 text-sm md:text-base"
                     aria-label={`Update record titled ${record.title}`}
                   >
