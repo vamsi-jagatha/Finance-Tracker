@@ -66,7 +66,7 @@ const AmountsBarChart = ({ data }) => {
     theme === "dark" ? "rgba(205, 205, 205, 0.1)" : "rgba(205, 205, 205, 0.3)";
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={300}>
       <BarChart
         data={data}
         margin={{
