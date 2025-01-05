@@ -99,7 +99,7 @@ export const navLinks = {
   links: [
     { name: "Home", path: "/" },
     { name: "Dashboard", path: "/dashboard" },
-    { name: "About", path: "/about" },
+    { name: "Transactions", path: "/transactions" },
   ],
 };
 
