@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
-import About from "./pages/About";
+import Transactions from "./pages/Transactions";
 import ThemeProvider from "./context/ThemeProvider";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -39,10 +39,10 @@ function App() {
             }
           />
           <Route
-            path="/about"
+            path="/transactions"
             element={
               <Layout>
-                <About />
+                <Transactions />
               </Layout>
             }
           />
