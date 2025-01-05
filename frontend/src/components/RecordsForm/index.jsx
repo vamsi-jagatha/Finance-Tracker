@@ -93,10 +93,13 @@ const RecordsForm = ({
   const handleRecordForm = async (e) => {
     e.preventDefault();
 
+    const capitalize = (str) =>
+      str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
     const record = {
       userId: user?.id,
       date: recordToUpdate?.date || new Date(),
-      title,
+      title: capitalize(title),
       amount: Number(amount),
       category,
       paymentMethod,
