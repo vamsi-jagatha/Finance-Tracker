@@ -254,7 +254,8 @@ const Dashboard = () => {
                       title={card.title}
                       icon={card.icon}
                       amount={getAmountForCategory(card.categoryType)}
-                      bgColor={card.bgColor}
+                      bgColorLight={card.bgColorLight}
+                      bgColorDark={card.bgColorDark}
                       iconColor={card.iconColor}
                     />
                   );
