@@ -1,12 +1,23 @@
 import CountUp from "react-countup";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
-const Card = ({ amount, icon, title, bgColor, iconColor }) => {
-  // Ensure amount is a valid number
+const Card = ({
+  amount,
+  icon,
+  title,
+  bgColorLight,
+  bgColorDark,
+  iconColor,
+}) => {
   const isValidAmount = !isNaN(amount);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <div
-      className={`flex items-center justify-center shadow-xl ${bgColor} border rounded-3xl mb-6 p-4`}
+      className={`flex items-center  shadow-xl ${
+        theme === "dark" ? bgColorLight : bgColorDark
+      } border rounded-3xl mb-6 p-4 md:w-1/2 lg:w-1/3`}
     >
       <span className={`mr-2 text-3xl md:text-4xl lg:text-5xl ${iconColor}`}>
         {icon}
