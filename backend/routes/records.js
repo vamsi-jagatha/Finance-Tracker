@@ -77,4 +77,40 @@ router.delete("/deleteRecord/:id", async (req, res) => {
   }
 });
 
+// Get total income, expense, and balance
+router.get("/calculateRecords/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const records = await recordsModel.find({ userId });
+    if (records.length === 0) {
+      return res.status(404).json({ message: "No records found for the user" });
+    }
+
+    // Calculate totals
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    records.forEach((record) => {
+      if (record.amount >= 0) {
+        totalIncome += record.amount;
+      } else if (record.amount <= 0) {
+        totalExpense += record.amount;
+      }
+    });
+
+    const balance = totalIncome + totalExpense;
+
+    res.status(200).json({
+      totalIncome,
+      totalExpense,
+      balance,
+    });
+  } catch (error) {
+    console.error("Error calculating summary:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+});
+
 export default router;
