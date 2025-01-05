@@ -8,18 +8,10 @@ import Card from "../../components/Card";
 
 import AmountsChart from "../../components/Chart";
 import { cardData } from "../../data";
-// import Budget from "../../components/Budget";
 import Sidebar from "../../components/Sidebar";
 
 // fetchAllRecords function
-const fetchAllRecords = async (
-  userId,
-  setAllRecords,
-  setTotalAmount,
-  setIncomeAmount,
-  setExpenseAmount,
-  setIsLoading
-) => {
+const fetchAllRecords = async (userId, setAllRecords, setIsLoading) => {
   if (!userId) return;
 
   const url = `${import.meta.env.VITE_GET_ALL_RECORDS}/${userId}`;
@@ -36,20 +28,7 @@ const fetchAllRecords = async (
     }
     const data = await response.json();
 
-    const total = data.reduce((sum, record) => sum + (record.amount || 0), 0);
-    const expenses = data.reduce(
-      (sum, record) => sum + (record.amount < 0 ? Math.abs(record.amount) : 0),
-      0
-    );
-    const incomes = data.reduce(
-      (sum, record) => sum + (record.amount > 0 ? record.amount : 0),
-      0
-    );
-
     setAllRecords(data);
-    setTotalAmount(total);
-    setExpenseAmount(expenses);
-    setIncomeAmount(incomes);
   } catch (err) {
     console.error("Error fetching records:", err);
   } finally {
@@ -66,21 +45,45 @@ const Dashboard = () => {
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [incomeAmount, setIncomeAmount] = useState(0);
   const [showRecordsForm, setShowRecordsForm] = useState(false);
+
   const { user } = useUser();
   const { theme } = useContext(ThemeContext);
 
+  // handleSort function
+  const handleSort = (field, isAscOrder) => {
+    const sortedRecords = [...allRecords].sort((a, b) => {
+      if (isAscOrder) {
+        return a[field] > b[field] ? 1 : -1;
+      }
+      return a[field] < b[field] ? 1 : -1;
+    });
+    setAllRecords(sortedRecords);
+  };
+
   useEffect(() => {
     if (user?.id) {
-      fetchAllRecords(
-        user.id,
-        setAllRecords,
-        setTotalAmount,
-        setIncomeAmount,
-        setExpenseAmount,
-        setIsLoading
-      );
+      fetchAllRecords(user.id, setAllRecords, setIsLoading);
     }
   }, [user]);
+
+  const calculateRecordsTotals = async () => {
+    const url = `${import.meta.env.VITE_CALCULATE_TOTAL}/${user.id}`;
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to calculate totals");
+    }
+    const data = await response.json();
+    setTotalAmount(data.balance);
+    setIncomeAmount(data.totalIncome);
+    setExpenseAmount(data.totalExpense);
+  };
 
   // recalculateTotals function
   const recalculateTotals = (records) => {
@@ -101,6 +104,8 @@ const Dashboard = () => {
     setExpenseAmount(expenses);
     setIncomeAmount(incomes);
   };
+
+  calculateRecordsTotals();
 
   // addRecordToTable function
   const addRecordToTable = (addedRecord) => {
@@ -149,7 +154,7 @@ const Dashboard = () => {
       const amount = record.amount || 0;
       const date = new Date(record.date).toLocaleDateString();
       return {
-        name: date,
+        date: date,
         savings: amount,
         income: amount > 0 ? amount : 0,
         expense: amount < 0 ? Math.abs(amount) : 0,
@@ -162,7 +167,7 @@ const Dashboard = () => {
       case "income":
         return incomeAmount;
       case "expenses":
-        return expenseAmount;
+        return -expenseAmount;
       default:
         return totalAmount;
     }
@@ -242,7 +247,6 @@ const Dashboard = () => {
               </div>
               <h2 className="text-3xl mb-4 font-semibold">Overview</h2>
               <div className="flex gap-5 items-center  flex-wrap  md:flex-nowrap">
-                {/* <Budget expenseAmount={expenseAmount} /> */}
                 {cardData.map((card) => {
                   return (
                     <Card
@@ -260,7 +264,7 @@ const Dashboard = () => {
                 <h2 className="text-3xl font-semibold mb-4">Analytics</h2>
                 <AmountsChart data={chartData} />
               </div>
-              <div className="flex-grow-2 overflow-y-auto max-h-screen mt-6">
+              <div className="flex-grow-2 overflow-y-auto max-h-full mt-6">
                 {isLoading ? (
                   <div className="flex justify-center min-w-96 h-[70vh] w-[70vw] items-center">
                     <Oval
@@ -275,7 +279,7 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <>
-                    <h2 className="text-3xl font-semibold mb-4">
+                    <h2 className="text-3xl font-semibold mb-10 ml-4">
                       {" "}
                       Transactions
                     </h2>
@@ -285,6 +289,7 @@ const Dashboard = () => {
                       setRecordToUpdate={setRecordToUpdate}
                       deleteRecordCallback={deleteRecordFromTable}
                       setRecordsFormVisible={setShowRecordsForm}
+                      handleSort={handleSort}
                     />
                   </>
                 )}
