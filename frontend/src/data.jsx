@@ -2,7 +2,7 @@
 import { IoTrendingUp } from "react-icons/io5";
 import { IoTrendingDown } from "react-icons/io5";
 import { TbMoneybag } from "react-icons/tb";
-import { ChartNoAxesCombined, HandCoins } from "lucide-react"; // Importing Lucide React icon
+import { ChartNoAxesCombined, HandCoins, LayoutDashboard } from "lucide-react"; // Importing Lucide React icon
 import { Bell, HelpCircle } from "lucide-react"; // Importing additional Lucide React icons
 
 export const financeCategories = [
@@ -106,9 +106,9 @@ export const navLinks = {
 export const sidebarLinks = [
   {
     id: 1,
-    name: "Transactions",
-    link: "#transactions",
-    icon: <ChartNoAxesCombined />,
+    name: "Dashboard",
+    link: "/dashboard",
+    icon: <LayoutDashboard />,
   },
   {
     id: 2,
@@ -118,17 +118,22 @@ export const sidebarLinks = [
   },
   {
     id: 3,
-    name: "Notifications",
-    link: "#notifications",
-    icon: <Bell />, // Using Lucide React icon
+    name: "Transactions",
+    link: "/transactions",
+    icon: <ChartNoAxesCombined />,
   },
   {
     id: 4,
+    name: "Notifications",
+    link: "#notifications",
+    icon: <Bell />,
+  },
+  {
+    id: 5,
     name: "Help",
     link: "#help",
-    icon: <HelpCircle />, // Using Lucide React icon
+    icon: <HelpCircle />,
   },
-  // Add more links as needed
 ];
 
 export const cardData = [
